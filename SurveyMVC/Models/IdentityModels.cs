@@ -20,10 +20,10 @@ namespace SurveyMVC.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        DbSet<Survey> Surveys { get; set; }
-        DbSet<Question> Question { get; set; }
-        DbSet<Response> Response { get; set; }
-        DbSet<Answer> Answers { get; set; }
+        public DbSet<Survey> Surveys { get; set; }
+        public DbSet<Question> Questions { get; set; }
+        public DbSet<Response> Responses { get; set; }
+        public DbSet<Answer> Answers { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

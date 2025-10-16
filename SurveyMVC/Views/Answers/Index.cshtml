@@ -1,0 +1,45 @@
+﻿@model IEnumerable<SurveyMVC.Models.Answer>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Question.QuestionDetails)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Response.EmployeeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AnswerDetails)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Question.QuestionDetails)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Response.EmployeeId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AnswerDetails)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>
