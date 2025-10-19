@@ -1,34 +1,84 @@
 ﻿@model SurveyMVC.Models.Survey
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Survey Details";
 }
 
-<h2>Details</h2>
+<style>
+    .survey-details {
+        margin-top: 40px;
+    }
 
-<div>
-    <h4>Survey</h4>
+    .survey-title {
+        font-size: 26px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #2c3e50;
+    }
+
+    .survey-meta {
+        color: #888;
+        margin-bottom: 20px;
+    }
+
+    .questions-list {
+        margin-top: 30px;
+        padding-left: 0;
+        list-style: none;
+    }
+
+    .question-item {
+        background: #f9f9f9;
+        border-left: 5px solid #007bff;
+        padding: 15px 20px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .question-number {
+        font-weight: bold;
+        color: #007bff;
+        margin-right: 10px;
+    }
+
+    .no-questions {
+        color: #999;
+        font-style: italic;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="survey-details">
+    <h2 class="survey-title">@Model.Title Survey</h2>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.AdminId)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.AdminId)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+    <h3 style="margin-top: 50px">Questions</h3>
 
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
+    @if (Model.Questions != null && Model.Questions.Any())
+    {
+        <ul class="questions-list">
+            @for (int i = 0; i < Model.Questions.Count; i++)
+            {
+                <li class="question-item">
+                    <span class="question-number">Q@(i + 1):</span>
+                    @Model.Questions[i].QuestionDetails
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <div class="no-questions">
+            This survey has no questions yet.
+        </div>
+    }
 
-    </dl>
+    <hr />
+
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
+    </p>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
