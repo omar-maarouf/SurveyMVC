@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Employee Dashboard";
+}
+
+<h2 class="mb-4">Employee Dashboard</h2>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card text-center shadow-sm p-4">
+            <h5>Available Surveys</h5>
+            <h2>@ViewBag.AvailableSurveys</h2>
+            <a href="@Url.Action("Index", "Surveys")" class="btn btn-primary mt-2">View Surveys</a>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card text-center shadow-sm p-4">
+            <h5>My Responses</h5>
+            <h2>@ViewBag.MyResponses</h2>
+            <a href="@Url.Action("Index", "Responses")" class="btn btn-outline-primary mt-2">View My Responses</a>
+        </div>
+    </div>
+</div>
+
+<div class="alert alert-info mt-4">
+    <strong>Tip:</strong> Select a survey from the surveys to start answering questions.
+</div>

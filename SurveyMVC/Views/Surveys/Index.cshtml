@@ -1,39 +1,102 @@
 ﻿@model IEnumerable<SurveyMVC.Models.Survey>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Surveys";
 }
 
-<h2>Index</h2>
+<style>
+    .survey-index-container {
+        margin-top: 40px;
+    }
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Admin.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th></th>
-    </tr>
+    h2 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 30px;
+    }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Admin.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #fff;
+    }
 
-</table>
+    th, td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    th {
+        background-color: #007bff;
+        color: white;
+        font-weight: 600;
+
+    }
+
+    .table-actions a {
+        margin-right: 8px;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .action-edit {
+        color: #007bff;
+    }
+
+    .action-details {
+        color: #28a745;
+    }
+
+    .action-delete {
+        color: #dc3545;
+    }
+
+    .no-surveys {
+        color: #888;
+        font-style: italic;
+        margin-top: 15px;
+    }
+</style>
+
+<div class="survey-index-container">
+    <h2>All Surveys</h2>
+
+    <p>
+        @Html.ActionLink("Create New Survey", "Create", null, new { @class = "btn btn-success" })
+    </p>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thead style="background-color:cornflowerblue">
+                <tr>
+                    <th>Created By</th>
+                    <th>Title</th>
+                    <th style="width: 200px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@(item.Admin != null ? item.Admin.UserName : "—")</td>
+                        <td>@item.Title</td>
+                        <td class="table-actions">
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "action-edit" }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "action-details" }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "action-delete" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="no-surveys">No surveys found.</p>
+    }
+</div>

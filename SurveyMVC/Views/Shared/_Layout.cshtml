@@ -3,36 +3,119 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Survey MVC</title>
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #004e92, #000428);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .navbar-brand {
+            font-weight: 600;
+            font-size: 1.3rem;
+            color: #fff !important;
+        }
+
+        .nav-link {
+            color: #e0e0e0 !important;
+            font-weight: 500;
+            margin-right: 10px;
+            transition: 0.3s;
+        }
+
+            .nav-link:hover {
+                color: #fff !important;
+                transform: translateY(-1px);
+            }
+
+        .container.body-content {
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px 40px;
+            margin-top: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        footer {
+            text-align: center;
+            color: #777;
+            margin-top: 40px;
+            padding: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        hr {
+            margin-top: 40px;
+            margin-bottom: 30px;
+            border-top: 1px solid #ddd;
+        }
+
+        .btn-primary {
+            background-color: #004e92;
+            border: none;
+            border-radius: 0.4rem;
+            transition: 0.3s;
+        }
+
+            .btn-primary:hover {
+                background-color: #003b73;
+                transform: translateY(-1px);
+            }
+
+        h2, h3, h4 {
+            color: #004e92;
+            font-weight: 600;
+        }
+
+        table {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: #004e92 !important;
+            color: white !important;
+        }
+
+        td, th {
+            vertical-align: middle;
+        }
+    </style>
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-sm navbar-dark">
         <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+            @Html.ActionLink("Survey MVC", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Surveys", "Index", "Surveys", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Responses", "Index", "Responses", new { area = "" }, new { @class = "nav-link" })</li>
                 </ul>
-                 @Html.Partial("_LoginPartial")
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </nav>
-    <div class="container body-content">
+
+    <div class="container body-content shadow-sm">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Survey MVC</p>
         </footer>
     </div>
 

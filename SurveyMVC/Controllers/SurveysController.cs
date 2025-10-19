@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using SurveyMVC.Models;
 using Microsoft.AspNet.Identity;
@@ -48,14 +47,29 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title")] Survey survey)
+        public ActionResult Create(Survey survey)
         {
+
+            if (survey.Questions == null || !survey.Questions.Any())
+            {
+                ModelState.AddModelError("", "A survey must contain at least one question.");
+                return View(survey);
+            }
+
+            if (survey.Questions.Any(q => string.IsNullOrWhiteSpace(q.QuestionDetails)))
+            {
+                ModelState.AddModelError("", "All questions must have text.");
+                return View(survey);
+            }
+
             if (ModelState.IsValid)
             {
                 survey.AdminId = this.User.Identity.GetUserId();
+                db.Surveys.Add(survey);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+
 
             return View(survey);
         }
@@ -80,15 +94,38 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,AdminId,Title")] Survey survey)
+        public ActionResult Edit(Survey survey)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(survey);
+
+            // Load the existing survey and its questions from the database
+            var existingSurvey = db.Surveys
+                .Include(s => s.Questions)
+                .FirstOrDefault(s => s.Id == survey.Id);
+
+            if (existingSurvey == null)
+                return HttpNotFound();
+
+            existingSurvey.Title = survey.Title;
+
+            if (survey.Questions != null)
             {
-                db.Entry(survey).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                foreach (var updatedQuestion in survey.Questions)
+                {
+                    var questionInDb = existingSurvey.Questions
+                        .FirstOrDefault(q => q.Id == updatedQuestion.Id);
+
+                    if (questionInDb != null)
+                    {
+                        questionInDb.QuestionDetails = updatedQuestion.QuestionDetails;
+                    }
+                }
             }
-            return View(survey);
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         // GET: Surveys/Delete/5
