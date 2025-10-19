@@ -13,5 +13,6 @@ namespace SurveyMVC.Models
         public int SurveyId { get; set; }
         public virtual Survey Survey { get; set; }
         public string EmployeeId { get; set; }
+        public virtual ApplicationUser Employee { get; set; }
     }
 }

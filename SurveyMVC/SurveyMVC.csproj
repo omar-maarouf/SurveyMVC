@@ -182,6 +182,10 @@
     <Compile Include="Migrations\202510161247496_SurveyInitial.Designer.cs">
       <DependentUpon>202510161247496_SurveyInitial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202510190715594_Users-linking.cs" />
+    <Compile Include="Migrations\202510190715594_Users-linking.Designer.cs">
+      <DependentUpon>202510190715594_Users-linking.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Answer.cs" />
@@ -319,6 +323,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202510161247496_SurveyInitial.resx">
       <DependentUpon>202510161247496_SurveyInitial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202510190715594_Users-linking.resx">
+      <DependentUpon>202510190715594_Users-linking.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

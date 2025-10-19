@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using SurveyMVC.Models;
+using Microsoft.AspNet.Identity;
 
 namespace SurveyMVC.Controllers
 {
@@ -36,6 +37,7 @@ namespace SurveyMVC.Controllers
         }
 
         // GET: Surveys/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -46,10 +48,12 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,AdminId,Title")] Survey survey)
+        [Authorize(Roles = "Admin")]
+        public ActionResult Create([Bind(Include = "Title")] Survey survey)
         {
             if (ModelState.IsValid)
             {
+                survey.AdminId = this.User.Identity.GetUserId();
                 db.Surveys.Add(survey);
                 db.SaveChanges();
                 return RedirectToAction("Index");

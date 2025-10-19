@@ -11,6 +11,7 @@ namespace SurveyMVC.Models
         [Key]
         public int Id { get; set; }
         public string AdminId { get; set; }
+        public virtual ApplicationUser Admin { get; set; }
         [Required]
         public string Title { get; set; }
     }
