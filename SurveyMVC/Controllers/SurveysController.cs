@@ -48,13 +48,11 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "Title")] Survey survey)
         {
             if (ModelState.IsValid)
             {
                 survey.AdminId = this.User.Identity.GetUserId();
-                db.Surveys.Add(survey);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

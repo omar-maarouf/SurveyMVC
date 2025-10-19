@@ -14,5 +14,7 @@ namespace SurveyMVC.Models
         public virtual ApplicationUser Admin { get; set; }
         [Required]
         public string Title { get; set; }
+
+        public virtual List<Question> Questions { get; set; }
     }
 }

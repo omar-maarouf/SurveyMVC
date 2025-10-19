@@ -39,7 +39,7 @@ namespace SurveyMVC.Controllers
         // GET: Responses/Create
         public ActionResult Create()
         {
-            ViewBag.SurveyId = new SelectList(db.Surveys, "Id", "AdminId");
+            ViewBag.SurveyId = new SelectList(db.Surveys, "Id", "Title");
             return View();
         }
 
