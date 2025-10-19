@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Admin Dashboard";
+}
+
+<h2 class="mb-4">Admin Dashboard</h2>
+
+<div class="row">
+    <div class="col-md-3 mb-4">
+        <div class="card text-center shadow-sm p-3">
+            <h5>Total Surveys</h5>
+            <h2>@ViewBag.TotalSurveys</h2>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center shadow-sm p-3">
+            <h5>Total Questions</h5>
+            <h2>@ViewBag.TotalQuestions</h2>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center shadow-sm p-3">
+            <h5>Total Responses</h5>
+            <h2>@ViewBag.TotalResponses</h2>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="card text-center shadow-sm p-3">
+            <h5>Employees</h5>
+            <h2>@ViewBag.TotalEmployees</h2>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <h4>Quick Actions</h4>
+    <div class="list-group">
+        <a href="@Url.Action("Create", "Surveys")" class="list-group-item list-group-item-action">
+            ➕ Create New Survey
+        </a>
+        <a href="@Url.Action("Index", "Surveys")" class="list-group-item list-group-item-action">
+            📋 Manage Surveys
+        </a>
+        <a href="@Url.Action("Index", "Responses")" class="list-group-item list-group-item-action">
+            📊 View All Responses
+        </a>
+        <a href="@Url.Action("Index", "Questions")" class="list-group-item list-group-item-action">
+            ❓ Manage Questions
+        </a>
+    </div>
+</div>

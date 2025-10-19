@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using SurveyMVC.Models;
 
 namespace SurveyMVC.Controllers
@@ -18,7 +19,16 @@ namespace SurveyMVC.Controllers
         public ActionResult Index()
         {
             var responses = db.Responses.Include(r => r.Survey);
-            return View(responses.ToList());
+            if (User.IsInRole("Admin")) {
+                return View(responses.ToList());
+            }
+            else
+            {
+                string emplyeeId = User.Identity.GetUserId();
+                responses = responses.Where(r => r.EmployeeId == emplyeeId);
+                return View(responses.ToList());
+            }
+            
         }
 
         // GET: Responses/Details/5

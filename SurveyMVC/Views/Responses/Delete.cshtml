@@ -1,40 +1,69 @@
 ﻿@model SurveyMVC.Models.Response
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete Response";
 }
 
-<h2>Delete</h2>
-
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Response</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Survey.AdminId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Survey.AdminId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EmployeeId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EmployeeId)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0 text-white">
+                <i class="bi bi-trash"></i> Delete Response
+            </h4>
+            <a href="@Url.Action("Index")" class="btn btn-light btn-sm"> <i class="bi bi-arrow-left"></i> Back to Responses </a>
         </div>
-    }
+
+
+        <div class="card-body">
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <div>
+                    Are you sure you want to <strong>permanently delete</strong> this response?
+                </div>
+            </div>
+
+            <dl class="row mb-3">
+                <dt class="col-sm-3 fw-bold text-secondary">Survey Title</dt>
+                <dd class="col-sm-9">@Model.Survey.Title</dd>
+
+                <dt class="col-sm-3 fw-bold text-secondary">Employee</dt>
+                <dd class="col-sm-9">@Model.Employee.Email</dd>
+
+            </dl>
+
+            @if (Model.Answers != null && Model.Answers.Any())
+            {
+                <h5 class="text-[004e92] mt-4 mb-2">
+                    <i class="bi bi-list-check"></i> Answers Summary
+                </h5>
+                <ul class="list-group mb-3">
+                    @foreach (var answer in Model.Answers.Take(3))
+                    {
+                        <li class="list-group-item">
+                            <strong>@answer.Question.QuestionDetails</strong>
+                            <span class="text-muted">@answer.AnswerDetails</span>
+                        </li>
+                    }
+                </ul>
+
+                if (Model.Answers.Count > 3)
+                {
+                    <p class="text-muted small">
+                        (+ @Model.Answers.Count - 3 more answers...)
+                    </p>
+                }
+            }
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="bi bi-trash-fill"></i> Delete
+                    </button>
+                    @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-secondary px-4" })
+                </div>
+            }
+        </div>
+    </div>
 </div>
