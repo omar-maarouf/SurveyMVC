@@ -14,5 +14,6 @@ namespace SurveyMVC.Models
         public string QuestionDetails { get; set; }
         public int SurveyId { get; set; }
         public virtual Survey Survey { get; set; }
+        public virtual List<Answer> Answers { get; set; }
     }
 }

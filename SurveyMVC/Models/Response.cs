@@ -16,4 +16,12 @@ namespace SurveyMVC.Models
         public virtual ApplicationUser Employee { get; set; }
         public virtual List<Answer> Answers { get; set; }
     }
+
+    public class ResponseViewModel
+    {
+        public int SurveyId { get; set; }
+        public string SurveyTitle { get; set; }
+        public List<string> Answers { get; set; }
+        public List<Question> Questions { get; set; }
+    }
 }

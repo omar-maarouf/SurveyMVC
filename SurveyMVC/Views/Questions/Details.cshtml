@@ -11,11 +11,19 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Survey.AdminId)
+            @Html.DisplayNameFor(model => model.Survey.Title)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Survey.AdminId)
+            @Html.DisplayFor(model => model.Survey.Title)
+        </dd>
+
+        <dt>
+            Created by
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Survey.Admin.Email)
         </dd>
 
         <dt>
@@ -26,9 +34,34 @@
             @Html.DisplayFor(model => model.QuestionDetails)
         </dd>
 
+        @if (Model.Survey.Responses.Count > 0)
+            {
+                <dt>Answer(s)</dt>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Answer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Answers)
+                        {
+                        <tr>
+                            <td>@item.Response.Employee.Email</td>
+                            <td>@item.AnswerDetails</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+        }
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (Model.Survey.Responses.Count == 0)
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })<span> |</span>
+    }
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
 </p>

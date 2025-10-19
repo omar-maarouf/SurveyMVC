@@ -65,38 +65,59 @@
 <div class="survey-index-container">
     <h2>All Surveys</h2>
 
-    <p>
-        @Html.ActionLink("Create New Survey", "Create", null, new { @class = "btn btn-success" })
-    </p>
+<p>
+    @if (this.User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Create New", "Create")
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Admin.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            Number of Questions
+        </th>
+        <th></th>
+    </tr>
 
-    @if (Model != null && Model.Any())
-    {
-        <table class="table">
-            <thead style="background-color:cornflowerblue">
-                <tr>
-                    <th>Created By</th>
-                    <th>Title</th>
-                    <th style="width: 200px;">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Admin.UserName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @item.Questions.Count
+        </td>
+        <td>
+            @if (this.User.IsInRole("Admin"))
+            {
+                if (item.Responses.Count == 0 && item.Questions.Count > 0)
                 {
-                    <tr>
-                        <td>@(item.Admin != null ? item.Admin.UserName : "—")</td>
-                        <td>@item.Title</td>
-                        <td class="table-actions">
-                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "action-edit" }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "action-details" }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "action-delete" })
-                        </td>
-                    </tr>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })<span> |</span>
                 }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <p class="no-surveys">No surveys found.</p>
-    }
-</div>
+                @Html.ActionLink("Details", "Details", new { id = item.Id })
+                if (item.Responses.Count == 0)
+                {
+                    <span> |</span>@Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                }
+            }
+            else
+            {
+                if (item.Questions.Count > 0)
+                {
+                    @Html.ActionLink("Respond", "Respond", new { surveyId = item.Id })
+                }
+            }
+        </td>
+    </tr>
+}
+
+</table>

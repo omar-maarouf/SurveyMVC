@@ -42,6 +42,22 @@ namespace SurveyMVC.Controllers
             return View();
         }
 
+        public ActionResult Respond(int? surveyId)
+        {
+            if (surveyId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            int id = surveyId.Value;
+            List<Question> questions = db.Questions.Where(q => q.SurveyId.Equals(id)).ToList();
+            if (questions.Count == 0)
+            {
+                return HttpNotFound();
+            }
+            // Redirect with surveyId as a route parameter
+            return RedirectToAction("Create", "Responses", new { surveyId = id });
+        }
+
         // POST: Surveys/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.

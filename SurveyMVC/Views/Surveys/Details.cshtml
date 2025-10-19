@@ -53,6 +53,17 @@
     <h2 class="survey-title">@Model.Title Survey</h2>
     <hr />
 
+    @if (Model.Questions != null && Model.Questions.Any())
+    {
+        if (Model.Responses.Count == 0)
+        {
+            <h4>No submited responses</h4>
+        }
+        else
+        {
+            <h4>Number of Response(s): @Model.Responses.Count</h4>
+        }
+    }
 
     <h3 style="margin-top: 50px">Questions</h3>
 
@@ -64,6 +75,29 @@
                 <li class="question-item">
                     <span class="question-number">Q@(i + 1):</span>
                     @Model.Questions[i].QuestionDetails
+                    @if (Model.Responses.Count > 0)
+                    { 
+                        <input type="button" class="btn btn-primary" value="Show Response(s)" id="question@(i)" onclick="toggleResponses(@(i))" />
+                        <div class="d-none" id="responses@(i)">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Responder</th>
+                                        <th>Answer</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var answer in Model.Questions[i].Answers)
+                                    {
+                                        <tr>
+                                            <td>@answer.Response.Employee.UserName</td>
+                                            <td>@answer.AnswerDetails</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
                 </li>
             }
         </ul>
@@ -78,7 +112,29 @@
     <hr />
 
     <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
+        @if (Model.Responses.Count == 0)
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" })
+        }
         @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
     </p>
 </div>
+
+<script>
+    function toggleResponses(i) {
+        var btn = document.getElementById("question" + i);
+        var div = document.getElementById("responses" + i);
+        if (div.classList.contains("d-none")) {
+            btn.classList.remove("btn-primary");
+            btn.classList.add("btn-secondary");
+            btn.value = "Hide Response(s)";
+            div.classList.remove("d-none");
+        }
+        else {
+            btn.classList.add("btn-primary");
+            btn.classList.remove("btn-secondary");
+            btn.value = "Show Response(s)";
+            div.classList.add("d-none");
+        }
+    }
+</script>

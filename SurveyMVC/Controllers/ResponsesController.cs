@@ -47,10 +47,26 @@ namespace SurveyMVC.Controllers
         }
 
         // GET: Responses/Create
-        public ActionResult Create()
+        public ActionResult Create(int? surveyId)
         {
-            ViewBag.SurveyId = new SelectList(db.Surveys, "Id", "Title");
-            return View();
+            if (surveyId == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var survey = db.Surveys.Find(surveyId);
+            if (survey == null)
+            {
+                return HttpNotFound();
+            }
+            List<Question> questions = db.Questions.Where(q => q.SurveyId.Equals(surveyId.Value)).ToList();
+            if (questions.Count == 0)
+            {
+                return HttpNotFound();
+            }
+
+            //ViewBag.Questions = questions;
+            //ViewBag.Survey = survey; // Pass the Survey object to the view
+            return View(new ResponseViewModel { Questions = questions, SurveyTitle = survey.Title, SurveyId = surveyId.Value });
         }
 
         // POST: Responses/Create
@@ -58,16 +74,39 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,SurveyId,EmployeeId")] Response response)
+        public ActionResult Create(ResponseViewModel response)
         {
+            //response.Survey = db.Surveys.Find(response.SurveyId);
+            response.Questions = db.Questions.Where(q => q.SurveyId.Equals(response.SurveyId)).ToList();
+            if (response.Answers == null || !response.Answers.Any())
+            {
+                ModelState.AddModelError("", "A response must contain answer for each question.");
+                return View(response);
+            }
+            if (response.Answers.Any(a => string.IsNullOrWhiteSpace(a)))
+            {
+                ModelState.AddModelError("", "All questions must have text.");
+                return View(response);
+            }
             if (ModelState.IsValid)
             {
-                db.Responses.Add(response);
+                var savedResponse = db.Responses.Add(new Response { EmployeeId = this.User.Identity.GetUserId(), SurveyId = response.SurveyId });
+                for (int i = 0; i < response.Answers.Count; i++)
+                {
+                    Answer temp = new Answer
+                    {
+                        AnswerDetails = response.Answers[i],
+                        QuestionId = response.Questions[i].Id,
+                        ResponseId = savedResponse.Id
+                    };
+                    db.Answers.Add(temp);
+                }
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.SurveyId = new SelectList(db.Surveys, "Id", "AdminId", response.SurveyId);
+            //ViewBag.SurveyId = new SelectList(db.Surveys, "Id", "AdminId", response.SurveyId);
+            //ViewBag.Survey = response.Survey;
             return View(response);
         }
 

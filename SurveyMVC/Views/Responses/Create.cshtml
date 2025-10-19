@@ -1,7 +1,9 @@
-﻿@model SurveyMVC.Models.Response
+﻿@model SurveyMVC.Models.ResponseViewModel
 
 @{
     ViewBag.Title = "Create";
+    //Model.Survey = ViewBag.Survey as SurveyMVC.Models.Survey;
+    //SurveyMVC.Models.Survey survey = ViewBag.Survey;
 }
 
 <h2>Create</h2>
@@ -11,36 +13,38 @@
 {
     @Html.AntiForgeryToken()
     
-    <div class="form-horizontal">
-        <h4>Response</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.SurveyId, "SurveyId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("SurveyId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SurveyId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+<div class="form-horizontal">
+    <h4>Response</h4>
+    <br />
+    <h5>@Html.DisplayFor(model => model.SurveyTitle) </h5>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.SurveyId)
+    <div class="form-group">
+        <h4 style="margin-top: 50px;">Answers</h4>
+        <ul class="answers-list" id="answersContainer">
+            @for (int i = 0; i < (Model.Questions as List<SurveyMVC.Models.Question>).Count; i++)
+            {
+                <li class="answer-item" data-index="@(i)">
+                    <p>@((Model.Questions as List<SurveyMVC.Models.Question>)[i].QuestionDetails)</p>
+                    <input type="text" name="Answers"
+                           class="form-control answer-input"
+                           placeholder="Enter answer text" required />
+                </li>
+            }
+        </ul>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EmployeeId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-success" />
         </div>
     </div>
+</div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary" })
 </div>
 
 @section Scripts {

@@ -16,5 +16,6 @@ namespace SurveyMVC.Models
         public string Title { get; set; }
 
         public virtual List<Question> Questions { get; set; }
+        public virtual List<Response> Responses { get; set; }
     }
 }
