@@ -105,6 +105,10 @@
                 <ul class="navbar-nav flex-grow-1">
                     <li>@Html.ActionLink("Surveys", "Index", "Surveys", new { area = "" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Responses", "Index", "Responses", new { area = "" }, new { @class = "nav-link" })</li>
+                    @if (this.User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Users", "Index", "Users", new { area = "" }, new { @class = "nav-link" })</li>
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

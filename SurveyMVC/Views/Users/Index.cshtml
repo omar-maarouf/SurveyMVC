@@ -1,0 +1,52 @@
+﻿@model IEnumerable<SurveyMVC.Models.UserViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Users</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.UserName)
+        </th>
+        <th>
+            Is Admin
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.UserName)
+            </td>
+            <td>
+                @using (Html.BeginForm("EditRole", "Users", new { id = item.User.Id, admin = !(item.IsAdmin) }, FormMethod.Post, new { @id = "editRoleForm[" + item.User.Id + "]" }))
+                {
+                    <input type="checkbox" checked="@item.IsAdmin" onclick="document.getElementById(`editRoleForm[@(item.User.Id)]`).submit();"/>
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+@*<script>
+    function submit() {
+        document.getElementById("editRoleForm").s
+    }
+</script>*@

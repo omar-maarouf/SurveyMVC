@@ -151,11 +151,11 @@ namespace SurveyMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.UserName, Email = model.Email, PhoneNumber = model.PhoneNumber };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await UserManager.AddToRoleAsync(user.Id, model.Role.ToString());
+                    await UserManager.AddToRoleAsync(user.Id, Role.Employee.ToString());
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
@@ -403,6 +403,11 @@ namespace SurveyMVC.Controllers
         {
             return View();
         }
+
+        //public ActionResult Index()
+        //{
+        //    return View(UserManager.Users.ToList());
+        //}
 
         protected override void Dispose(bool disposing)
         {
