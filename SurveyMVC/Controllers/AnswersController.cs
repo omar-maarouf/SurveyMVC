@@ -37,6 +37,7 @@ namespace SurveyMVC.Controllers
         }
 
         // GET: Answers/Create
+        [Authorize(Roles = "Employee")]
         public ActionResult Create()
         {
             ViewBag.QuestionId = new SelectList(db.Questions, "Id", "QuestionDetails");
@@ -49,6 +50,7 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Employee")]
         public ActionResult Create([Bind(Include = "Id,AnswerDetails,ResponseId,QuestionId")] Answer answer)
         {
             if (ModelState.IsValid)
@@ -64,6 +66,7 @@ namespace SurveyMVC.Controllers
         }
 
         // GET: Answers/Edit/5
+        [Authorize(Roles = "Employee")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -85,6 +88,7 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Employee")]
         public ActionResult Edit([Bind(Include = "Id,AnswerDetails,ResponseId,QuestionId")] Answer answer)
         {
             if (ModelState.IsValid)

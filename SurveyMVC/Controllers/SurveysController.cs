@@ -42,6 +42,8 @@ namespace SurveyMVC.Controllers
             return View();
         }
 
+        // GET: Surveys/Respond/5
+        [Authorize(Roles = "Employee")]
         public ActionResult Respond(int? surveyId)
         {
             if (surveyId == null)
@@ -63,6 +65,7 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create(Survey survey)
         {
 
@@ -91,6 +94,7 @@ namespace SurveyMVC.Controllers
         }
 
         // GET: Surveys/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -110,6 +114,7 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(Survey survey)
         {
             if (!ModelState.IsValid)
@@ -145,6 +150,7 @@ namespace SurveyMVC.Controllers
         }
 
         // GET: Surveys/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -162,6 +168,7 @@ namespace SurveyMVC.Controllers
         // POST: Surveys/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             Survey survey = db.Surveys.Find(id);

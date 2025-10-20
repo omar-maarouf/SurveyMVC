@@ -36,7 +36,8 @@ namespace SurveyMVC.Controllers
             return View(question);
         }
 
-        // GET: Questions/Create
+        // GET: Questions/
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.SurveyId = new SelectList(db.Surveys, "Id", "AdminId");
@@ -48,6 +49,7 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Create([Bind(Include = "Id,QuestionDetails,SurveyId")] Question question)
         {
             if (ModelState.IsValid)
@@ -62,6 +64,7 @@ namespace SurveyMVC.Controllers
         }
 
         // GET: Questions/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,6 +85,7 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "Id,QuestionDetails,SurveyId")] Question question)
         {
             if (ModelState.IsValid)
@@ -95,6 +99,7 @@ namespace SurveyMVC.Controllers
         }
 
         // GET: Questions/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -112,6 +117,7 @@ namespace SurveyMVC.Controllers
         // POST: Questions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult DeleteConfirmed(int id)
         {
             Question question = db.Questions.Find(id);

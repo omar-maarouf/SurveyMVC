@@ -47,6 +47,7 @@ namespace SurveyMVC.Controllers
         }
 
         // GET: Responses/Create
+        [Authorize(Roles = "Employee")]
         public ActionResult Create(int? surveyId)
         {
             if (surveyId == null)
@@ -63,9 +64,6 @@ namespace SurveyMVC.Controllers
             {
                 return HttpNotFound();
             }
-
-            //ViewBag.Questions = questions;
-            //ViewBag.Survey = survey; // Pass the Survey object to the view
             return View(new ResponseViewModel { Questions = questions, SurveyTitle = survey.Title, SurveyId = surveyId.Value });
         }
 
@@ -74,6 +72,7 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Employee")]
         public ActionResult Create(ResponseViewModel response)
         {
             //response.Survey = db.Surveys.Find(response.SurveyId);
@@ -104,13 +103,11 @@ namespace SurveyMVC.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            //ViewBag.SurveyId = new SelectList(db.Surveys, "Id", "AdminId", response.SurveyId);
-            //ViewBag.Survey = response.Survey;
             return View(response);
         }
 
         // GET: Responses/Edit/5
+        [Authorize(Roles = "Employee")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -131,6 +128,7 @@ namespace SurveyMVC.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Employee")]
         public ActionResult Edit([Bind(Include = "Id,SurveyId,EmployeeId")] Response response)
         {
             if (ModelState.IsValid)
