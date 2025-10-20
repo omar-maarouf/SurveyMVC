@@ -7,34 +7,57 @@
 <style>
     .survey-edit-container {
         margin-top: 40px;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    .survey-edit-title {
-        font-size: 26px;
-        font-weight: bold;
-        color: #2c3e50;
+    .card {
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+        background-color: #004e92;
+        color: white;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        padding: 15px 20px;
+        font-weight: 600;
+        font-size: 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-body {
+        padding: 25px;
+    }
+
+    h4 {
+        color: #004e92;
+        font-weight: 600;
         margin-bottom: 10px;
     }
 
-    .form-group {
-        margin-top: 30px;
-    }
-
     .form-control {
-        width: 80%;
+        width: 100%;
         font-size: 16px;
         padding: 8px 12px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
     }
 
     .questions-list {
-        margin-top: 30px;
+        margin-top: 20px;
         padding-left: 0;
         list-style: none;
     }
 
     .question-item {
-        background: #f9f9f9;
-        border-left: 5px solid #007bff;
+        background: #f8f9fa;
+        border-left: 5px solid #004e92;
         padding: 15px 20px;
         margin-bottom: 15px;
         border-radius: 8px;
@@ -46,17 +69,25 @@
     .question-input {
         flex: 1;
         margin-right: 10px;
-
-        width: 100%; /* makes it fill its container */
-        max-width: 700px; /* optional, to cap the width */
+        width: 100%;
     }
 
     .btn {
         border-radius: 6px;
-        padding: 6px 12px;
+        padding: 8px 14px;
         font-size: 14px;
-        transition: 0.2s;
+        transition: 0.2s ease-in-out;
     }
+
+    .btn-primary {
+        background-color: #004e92;
+        border: none;
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background-color: #003b70;
+        }
 
     .btn-success {
         background-color: #28a745;
@@ -64,9 +95,9 @@
         color: white;
     }
 
-    .btn-success:hover {
-        background-color: #218838;
-    }
+        .btn-success:hover {
+            background-color: #218838;
+        }
 
     .btn-danger {
         background-color: #dc3545;
@@ -75,17 +106,7 @@
     }
 
         .btn-danger:hover {
-            background-color: #c82333;
-        }
-
-    .btn-primary {
-        background-color: #007bff;
-        border: none;
-        color: white;
-    }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
+            background-color: #b52b38;
         }
 
     .btn-secondary {
@@ -95,49 +116,60 @@
     }
 
         .btn-secondary:hover {
-            background-color: #5a6268;
+            background-color: #565e64;
         }
 </style>
 
 <div class="survey-edit-container">
-    <h2 class="survey-edit-title">Edit Survey</h2>
-    <hr />
-
-    @using (Html.BeginForm("Edit", "Surveys", FormMethod.Post))
-    {
-        @Html.AntiForgeryToken()
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            <h4>Survey Title</h4>
-            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter survey title" } })
-            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+    <div class="card">
+        <div class="card-header">
+            <span><i class="bi bi-pencil-square"></i> Edit Survey</span>
+            <a href="@Url.Action("Index")" class="btn btn-light btn-sm" style="color:#004e92; font-weight:600;">
+                <i class="bi bi-arrow-left"></i> Back to Surveys
+            </a>
         </div>
 
-        <div class="form-group">
-            <h4 style="margin-top: 50px;">Questions</h4>
-            <ul class="questions-list" id="questionsContainer">
-                @for (int i = 0; i < Model.Questions.Count; i++)
-                {
-                    <li class="question-item" data-index="@i">
-                        <input type="hidden" name="Questions[@i].Id" value="@Model.Questions[i].Id" />
-                        <input type="text" name="Questions[@i].QuestionDetails"
-                               value="@Model.Questions[i].QuestionDetails"
-                               class="form-control question-input"
-                               placeholder="Enter question text" required />
-                    </li>
-                }
-            </ul>
+        <div class="card-body">
+            @using (Html.BeginForm("Edit", "Surveys", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
 
+                <div class="form-group mb-4">
+                    <h4>Survey Title</h4>
+                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter survey title" } })
+                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group mb-4">
+                    <h4>Questions</h4>
+                    <ul class="questions-list" id="questionsContainer">
+                        @for (int i = 0; i < Model.Questions.Count; i++)
+                        {
+                            <li class="question-item" data-index="@i">
+                                <input type="hidden" name="Questions[@i].Id" value="@Model.Questions[i].Id" />
+                                <input type="text" name="Questions[@i].QuestionDetails"
+                                       value="@Model.Questions[i].QuestionDetails"
+                                       class="form-control question-input"
+                                       placeholder="Enter question text" required />
+                            </li>
+                        }
+                    </ul>
+
+                    <button type="button" id="addQuestionBtn" class="btn btn-success mt-2">
+                        <i class="bi bi-plus-lg"></i> Add Question
+                    </button>
+                </div>
+
+                <hr />
+
+                <div class="form-group mt-4 d-flex gap-2">
+                    <input type="submit" value="Save Changes" class="btn btn-primary" />
+                    @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-secondary" })
+                </div>
+            }
         </div>
-
-        <hr />
-
-        <div class="form-group" style="margin-top: 40px;">
-            <input type="submit" value="Save Changes" class="btn btn-primary" />
-            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-secondary" })
-        </div>
-    }
+    </div>
 </div>
 
 @section Scripts {
@@ -153,7 +185,7 @@
                     <input type="text" name="Questions[${questionIndex}].QuestionDetails"
                            class="form-control question-input"
                            placeholder="Enter question text" required />
-                    <button type="button" class="btn btn-danger remove-question">Remove</button>
+                    <button type="button" class="btn btn-danger remove-question"><i class="bi bi-x-circle"></i> Remove</button>
                 </li>`;
             $("#questionsContainer").append(html);
             questionIndex++;
@@ -166,7 +198,7 @@
             reindexQuestions();
         });
 
-        // Reindex question numbers and names
+        // Reindex question names
         function reindexQuestions() {
             $("#questionsContainer .question-item").each(function (index) {
                 $(this).attr("data-index", index);

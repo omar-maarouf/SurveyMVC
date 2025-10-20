@@ -4,120 +4,85 @@
     ViewBag.Title = "Surveys";
 }
 
-<style>
-    .survey-index-container {
-        margin-top: 40px;
-    }
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold" style="color: #004e92;">
+            <i class="bi bi-journal-text"></i> Surveys
+        </h2>
 
-    h2 {
-        font-size: 28px;
-        font-weight: bold;
-        color: #2c3e50;
-        margin-bottom: 30px;
-    }
+        @if (User.IsInRole("Admin"))
+        {
+            <a href="@Url.Action("Create")" class="btn btn-primary shadow-sm" style="background-color: #004e92; border: none;">
+                <i class="bi bi-plus-circle"></i> Create New
+            </a>
+        }
+    </div>
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        background-color: #fff;
-    }
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Admin</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Questions Count</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Admin.UserName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Title)</td>
+                            <td>@item.Questions.Count</td>
+                            <td class="text-center">
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    if (item.Responses.Count == 0 && item.Questions.Count > 0)
+                                    {
+                                        <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-outline-primary btn-sm me-1">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </a>
+                                    }
 
-    th, td {
-        padding: 12px 15px;
-        border-bottom: 1px solid #ddd;
-        text-align: left;
-        vertical-align: middle;
-    }
+                                    <a href="@Url.Action("Details", new { id = item.Id })" class="btn btn-outline-success btn-sm me-1">
+                                        <i class="bi bi-eye"></i> Details
+                                    </a>
 
-    th {
-        background-color: #007bff;
-        color: white;
-        font-weight: 600;
+                                    if (item.Responses.Count == 0)
+                                    {
+                                        <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-outline-danger btn-sm">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </a>
+                                    }
+                                }
+                                else
+                                {
+                                    if (item.Questions.Count > 0)
+                                    {
+                                        // Check if the current user has already responded to this survey
+                                        var hasResponded = item.Responses.Any(r => r.Employee.Email == User.Identity.Name);
 
-    }
-
-    .table-actions a {
-        margin-right: 8px;
-        text-decoration: none;
-        font-weight: 500;
-    }
-
-    .action-edit {
-        color: #007bff;
-    }
-
-    .action-details {
-        color: #28a745;
-    }
-
-    .action-delete {
-        color: #dc3545;
-    }
-
-    .no-surveys {
-        color: #888;
-        font-style: italic;
-        margin-top: 15px;
-    }
-</style>
-
-<div class="survey-index-container">
-    <h2>All Surveys</h2>
-
-<p>
-    @if (this.User.IsInRole("Admin"))
-    {
-        @Html.ActionLink("Create New", "Create")
-    }
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Admin.UserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            Number of Questions
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Admin.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @item.Questions.Count
-        </td>
-        <td>
-            @if (this.User.IsInRole("Admin"))
-            {
-                if (item.Responses.Count == 0 && item.Questions.Count > 0)
-                {
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })<span> |</span>
-                }
-                @Html.ActionLink("Details", "Details", new { id = item.Id })
-                if (item.Responses.Count == 0)
-                {
-                    <span> |</span>@Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                }
-            }
-            else
-            {
-                if (item.Questions.Count > 0)
-                {
-                    @Html.ActionLink("Respond", "Respond", new { surveyId = item.Id })
-                }
-            }
-        </td>
-    </tr>
-}
-
-</table>
+                                        if (hasResponded)
+                                        {
+                                            <button class="btn btn-secondary btn-sm" disabled>
+                                                <i class="bi bi-check2-circle"></i> Responded
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("Respond", new { surveyId = item.Id })" class="btn btn-outline-primary btn-sm">
+                                                <i class="bi bi-pencil"></i> Respond
+                                            </a>
+                                        }
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
